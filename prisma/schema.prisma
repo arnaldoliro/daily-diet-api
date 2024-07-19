@@ -12,3 +12,19 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model user {
+  id Int @id @unique
+  name String
+  meals meals[]
+}
+
+model meals {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  teste DateTime @updatedAt
+  onDiet Boolean
+  userId Int
+  user user @relation(fields: [userId], references: [id])
+}
