@@ -70,4 +70,28 @@ export default class MealsController {
             return res.status(400).send({ error: 'Tarefa não encontrada' })
         }
     }
+
+    async editMeals(req: Request, res: Response) {
+        
+        
+        const {id, email, name, description, onDiet} = req.body
+        const user = await prisma.user.findFirst({where: {email: email}})
+
+        if (!user) {
+            return res.status(400).send({error: 'Usuário não encontrado'})
+        }
+
+        try {
+            const updateMeal = await prisma.meals.update({where: {userId: user.id, id: id},
+            data: {
+                name: name,
+                description: description,
+                onDiet: onDiet,
+            }
+        })
+        return res.status(200).send(updateMeal)
+        } catch(error) {
+            return res.status(400).send({error: 'Não foi possivel atualizar a refeição'})
+        }
+    }
 }

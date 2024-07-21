@@ -5,8 +5,8 @@ const userController = new UserController()
 const router = Router()
 
 router.post('/create', userController.createUser)
-router.get('/users', userController.getUser)
+router.get('/:id', userController.getUser)
 router.delete('/delete', userController.deleteUser)
-router.get('/meals/registred', userController.getAllMetricMeals)
+router.get('/metrics', userController.getAllMetricMeals)
 
 export default router;
