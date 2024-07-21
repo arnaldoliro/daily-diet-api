@@ -54,4 +54,20 @@ export default class MealsController {
             return res.status(200).send(mealDeleted)
         } catch(error) {return res.status(400).send({error: 'Falha ao remover a refeição'})}
     }
+
+    async selectMeal(req: Request, res: Response) {
+        const {id, name, email} = req.body
+        const user = await prisma.user.findFirst({where: {email: email}})
+
+        if (!user) {
+            return res.status(400).send({error: 'Usuário não encontrado'})
+        }
+
+        try {
+            const meal = await prisma.meals.findUnique({where: {id: id, userId: user.id}})
+            return res.status(200).send(meal)
+        } catch(error) {
+            return res.status(400).send({ error: 'Tarefa não encontrada' })
+        }
+    }
 }
